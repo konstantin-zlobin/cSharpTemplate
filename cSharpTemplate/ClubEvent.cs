@@ -38,46 +38,54 @@ namespace cSharpTemplate
             {
                 Tickets.Add(new Ticket() { ID = i, Category = TicketCategories.EnterOnly });
             }
+
 		}
 
-        public void SellTicket(TicketCategories category)
-        {
-            var ticketToSell = Tickets.FirstOrDefault(t => t.Category == category && t.IsSold != true);
+        public Ticket BookTicket(TicketCategories category, string buyerName)
+	    {
+            var ticketToBook = Tickets.FirstOrDefault(t => t.Category == category && t.Status == TicketStatus.Free);
 
-            if (ticketToSell != null)
-                ticketToSell.IsSold = true;
+            if (ticketToBook != null)
+            {
+                ticketToBook.Status = TicketStatus.Booked;
+                ticketToBook.BookingDate = DateTime.Now;
+                ticketToBook.BuyerName = buyerName;
+            }
             else
-                throw new Exception(String.Format("There are no tickets of {0} category available", category));
+                throw new Exception(String.Format("There are no tickets of {0} category available for booking", category));
+            return ticketToBook;
         }
 
-        public void SellTicket(int id)
+        public Ticket BookTicket(int id, string buyerName)
         {
-            var ticketToSell = Tickets.FirstOrDefault(t => t.ID == id);
+            var ticketToBook = Tickets.FirstOrDefault(t => t.ID == id);
+
+            if (ticketToBook != null)
+                if (ticketToBook.Status == TicketStatus.Free)
+                {
+                    ticketToBook.Status = TicketStatus.Booked;
+                    ticketToBook.BookingDate = DateTime.Now;
+                    ticketToBook.BuyerName = buyerName;
+                }
+                else
+                    throw new Exception(String.Format("Ticket ID {0} is already booked or sold", id));
+            else
+                throw new Exception(String.Format("Ticket ID {0} is not found", id));
+            return ticketToBook;
+        }
+
+        public Ticket BuyTicket(int id, string buyerName)
+        {
+            var ticketToSell = Tickets.FirstOrDefault(t => t.ID == id && buyerName == t.BuyerName);
 
             if (ticketToSell != null)
-                if (!ticketToSell.IsSold)
-                    ticketToSell.IsSold = true;
+                if (ticketToSell.Status == TicketStatus.Booked)
+                    ticketToSell.Status = TicketStatus.Sold;
                 else
                     throw new Exception(String.Format("Ticket ID {0} is already sold", id));
             else
-                throw new Exception(String.Format("Ticket ID {0} is not found", id));    
-                
+                throw new Exception(String.Format("Ticket ID {0} is not found", id));
+            return ticketToSell;
         }
-		
-		 
-    
-        //public int CheapestPrice { get; set; }
-        //public int TablePrice { get; set; }
-        //public int VipPrice { get; set; }
-
-        
 	}
-
-    public enum TicketCategories
-    {
-        VIP,
-        Simple,
-        EnterOnly
-    }
 }
-

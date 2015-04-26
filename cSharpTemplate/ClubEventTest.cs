@@ -20,6 +20,7 @@ namespace cSharpTemplate
             clubEvent.Title = "Megashow 12345";
             clubEvent.DateAndTime = DateTime.Now.AddDays(2);
             clubEvent.Artists = new List<string> { "Volodya", "Oleg" };
+            clubEvent.TicketCategoriesToPrices = new Dictionary<TicketCategories, decimal>();
             clubEvent.TicketCategoriesToPrices.Add(TicketCategories.VIP, 4000);
             clubEvent.TicketCategoriesToPrices.Add(TicketCategories.Simple, 2000);
             clubEvent.TicketCategoriesToPrices.Add(TicketCategories.EnterOnly, 400);
@@ -28,19 +29,48 @@ namespace cSharpTemplate
         [Test]
         public void TicketsCreationTest()
         {
-            Assert.IsFalse(clubEvent.Tickets.Any(t => t.IsSold));
+            Assert.IsFalse(clubEvent.Tickets.Any(t => t.Status == TicketStatus.Sold));
 
             Assert.IsTrue(clubEvent.Tickets.Count(t => t.Category == TicketCategories.EnterOnly) == 100);
         }
 
         [Test]
-        public void TicketsSellTest()
+        public void TicketsBookTest()
         {
+            var ticket = clubEvent.BookTicket(100, "Ivan Ivanov");
+
+            Assert.AreEqual(TicketStatus.Booked, ticket.Status);
+        }
+
+        [Test]
+        public void TicketsBuyTestWithoutBooking()
+        {  
             Assert.Throws<Exception>(
                 delegate
                 {
-                    clubEvent.SellTicket(136);
+                    var ticket = clubEvent.BuyTicket(100, "Ivan Ivanov");
                 });
+        }
+
+        [Test]
+        public void TicketsBuyBookedTest()
+        {
+            var ticket = clubEvent.BookTicket(100, "Ivan Ivanov");
+            clubEvent.BuyTicket(ticket.ID, "Ivan Ivanov");
+
+            Assert.AreEqual(TicketStatus.Sold, ticket.Status);
+        }
+
+        [Test]
+        public void TicketsBuyBooked_Exception_Test()
+        {
+            var ticket = clubEvent.BookTicket(100, "Peter Petrov");
+
+            Assert.Throws<Exception>(
+                delegate {
+                   clubEvent.BuyTicket(ticket.ID, "Ivan Ivanov");
+                }
+                );
         }
     }
 }

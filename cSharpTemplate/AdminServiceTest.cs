@@ -1,10 +1,9 @@
 ﻿using System;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace cSharpTemplate
 {
-	using NUnit.Framework;
-    using System.Collections.Generic;
-
 	[TestFixture]
 	public class AdminServiceTest
 	{
@@ -17,15 +16,19 @@ namespace cSharpTemplate
 			clubEvent.Title = "Megashow 12345";
 			clubEvent.DateAndTime = DateTime.Now.AddDays(2);
 			clubEvent.Artists = new List<string> { "Volodya", "Oleg" };
-            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.VIP, 4000);
+            clubEvent.TicketCategoriesToPrices = new Dictionary<TicketCategories, decimal>();
+            /*clubEvent.TicketCategoriesToPrices.Add(TicketCategories.VIP, 4000);
 			clubEvent.TicketCategoriesToPrices.Add(TicketCategories.Simple, 2000);
-			clubEvent.TicketCategoriesToPrices.Add(TicketCategories.EnterOnly, 400); 
+			clubEvent.TicketCategoriesToPrices.Add(TicketCategories.EnterOnly, 400); */
 		}
 
 		[Test]
 		public void AddEventWithRequiredData ()
 		{
 			var adminService = new AdminService();
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.VIP, 4000);
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.Simple, 2000);
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.EnterOnly, 400);
 
 			adminService.AddEvent(clubEvent);
 
@@ -81,7 +84,6 @@ namespace cSharpTemplate
 		{
 			var adminService = new AdminService();
             clubEvent.TicketCategoriesToPrices.Add(TicketCategories.VIP, 0);
-
 			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate
 				{
@@ -150,6 +152,9 @@ namespace cSharpTemplate
 		public void AddEven_SameDateSameTitle_ValidationFailed()
 		{
 			var adminService = new AdminService();
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.VIP, 4000);
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.Simple, 2000);
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.EnterOnly, 400);
 			adminService.AddEvent(clubEvent);
 
 			Assert.Throws<ArgumentOutOfRangeException>(
@@ -158,12 +163,6 @@ namespace cSharpTemplate
 					adminService.AddEvent(clubEvent);
 				}
 			);
-		}
-
-		[Test]
-		public void AddEven_SameDateDifferentTitle()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

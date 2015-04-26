@@ -48,26 +48,32 @@ namespace cSharpTemplate
 			return clubEvents;
 		}
 
-        public void SellEventTicket(Guid clubEventGuid, TicketCategories ticketCategory)
+        public Ticket BookEventTicket(Guid clubEventGuid, TicketCategories ticketCategory, string buyerName)
         {
             if (clubEventGuid == null)
                 throw new ArgumentException("clubEventGuid is null");
 
             var clubEvent = clubEvents.FirstOrDefault(ce => ce.ID == clubEventGuid);
 
+            Ticket ticket = null;
             if (clubEvent != null)
-                clubEvent.SellTicket(ticketCategory);
+                ticket = clubEvent.BookTicket(ticketCategory, buyerName);
+
+            return ticket;
         }
 
-        public void SellEventTicket(Guid clubEventGuid, int ticketId)
+        public Ticket BookEventTicket(Guid clubEventGuid, int ticketId, string buyerName)
         {
             if (clubEventGuid == null)
                 throw new ArgumentException("clubEventGuid is null");
 
             var clubEvent = clubEvents.FirstOrDefault(ce => ce.ID == clubEventGuid);
 
+            Ticket ticket = null;
             if (clubEvent != null)
-                clubEvent.SellTicket(ticketId);
+                ticket = clubEvent.BookTicket(ticketId, buyerName);
+
+            return ticket;
         }
 	}
 }

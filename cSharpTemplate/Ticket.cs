@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace cSharpTemplate
 {
@@ -10,6 +6,18 @@ namespace cSharpTemplate
     {
         public int ID { get; set; }
         public TicketCategories Category { get; set; }
-        public bool IsSold { get; set; }
+        public TicketStatus Status { get; set; }
+        public string BuyerName { get; set; }
+        public DateTime BookingDate { get; set; }
+
+        public DateTime BookingExpiredDate
+        {
+            get { return BookingDate.AddMinutes(30); }
+        }
+
+        public Ticket()
+        {
+            Status = TicketStatus.Free;
+        }
     }
 }
