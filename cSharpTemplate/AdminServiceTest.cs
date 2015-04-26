@@ -46,5 +46,75 @@ namespace cSharpTemplate
 				}
 			);
 		}
+
+		[Test]
+		public void AddEvenWithNullArtistsValidattionFailed()
+		{
+			var adminService = new AdminService();
+			_clubEvent.Artists = null;
+
+			Assert.Throws<ArgumentNullException>(
+				delegate
+				{
+					adminService.AddEvent(_clubEvent);
+				}
+			);
+		}
+
+		[Test]
+		public void AddEvenWithEmptyArtistsValidattionFailed()
+		{
+			var adminService = new AdminService();
+			_clubEvent.Artists = new string[] {};
+
+			Assert.Throws<ArgumentOutOfRangeException>(
+				delegate
+				{
+					adminService.AddEvent(_clubEvent);
+				}
+			);
+		}
+
+		[Test]
+		public void AddEvenWithoutVipPriceValidattionFailed()
+		{
+			var adminService = new AdminService();
+			_clubEvent.VipPrice = 0;
+
+			Assert.Throws<ArgumentOutOfRangeException>(
+				delegate
+				{
+					adminService.AddEvent(_clubEvent);
+				}
+			);
+		}
+
+		[Test]
+		public void AddEvenWithoutTablePriceValidattionFailed()
+		{
+			var adminService = new AdminService();
+			_clubEvent.TablePrice = 0;
+
+			Assert.Throws<ArgumentOutOfRangeException>(
+				delegate
+				{
+					adminService.AddEvent(_clubEvent);
+				}
+			);
+		}
+
+		[Test]
+		public void AddEvenWithoutCheapestPriceValidattionFailed()
+		{
+			var adminService = new AdminService();
+			_clubEvent.CheapestPrice = 0;
+
+			Assert.Throws<ArgumentOutOfRangeException>(
+				delegate
+				{
+					adminService.AddEvent(_clubEvent);
+				}
+			);
+		}
 	}
 }
