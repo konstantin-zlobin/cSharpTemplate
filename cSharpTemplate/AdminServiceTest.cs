@@ -58,5 +58,51 @@ using System.Collections.Generic;
             Assert.AreEqual(25, clubConcert.GetAvailableTicketsCount(TicketCategory.Simple));
             Assert.AreEqual(100, clubConcert.GetAvailableTicketsCount(TicketCategory.EnterOnly));
         }
+
+        [Test]
+        public void ClubConcertSellTicketByNumber_Test()
+        {
+            var admin_service = new AdminService();
+            var clubConcert = new ClubConcert("Test Concert", DateTime.Now, new List<string> { "Metallica" },
+                validTicketCategoryPrice);
+
+            admin_service.AddEvent(clubConcert);
+
+            var ticket = admin_service.SellTicket(clubConcert, TicketCategory.VIP, 1);
+
+            Assert.AreEqual(1, ticket.Number);
+        }
+
+        [Test]
+        public void ClubConcertSellTicketWhioutNumber_Test()
+        {
+            var admin_service = new AdminService();
+            var clubConcert = new ClubConcert("Test Concert", DateTime.Now, new List<string> { "Metallica" },
+                validTicketCategoryPrice);
+
+            admin_service.AddEvent(clubConcert);
+
+            var ticket = admin_service.SellTicket(clubConcert, TicketCategory.EnterOnly);
+
+            Assert.IsNotNull(ticket);
+        }
+
+	    [Test]
+	    public void ClubConcertSellTicketTwice_Test()
+	    {
+	        var admin_service = new AdminService();
+	        var clubConcert = new ClubConcert("Test Concert", DateTime.Now, new List<string> {"Metallica"},
+	            validTicketCategoryPrice);
+
+	        admin_service.AddEvent(clubConcert);
+
+	        var ticket = admin_service.SellTicket(clubConcert, TicketCategory.VIP, 7);
+	        Assert.Throws<Exception>(
+	            delegate
+	            {
+	                admin_service.SellTicket(clubConcert, TicketCategory.VIP, 7);
+	            }
+	            );
+        }
 	}
 }

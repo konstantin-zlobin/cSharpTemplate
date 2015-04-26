@@ -25,6 +25,22 @@ namespace cSharpTemplate
 		public List<ClubConcert> GetAllEvents() {
 			return club_events;
 		}
+
+	    public Seat SellTicket(ClubConcert clubConcert, TicketCategory ticketCategory, int? seatNumber = null)
+	    {
+            Seat seat = clubConcert.GetFreeTicket(ticketCategory, seatNumber);
+
+	        if (seat != null)
+	        {
+	            seat.Sold = true;
+	        }
+	        else
+	        {
+	           throw new Exception("Ticket not exists or already sold.");
+	        }
+
+	        return seat;
+	    }
 	}
 }
 
