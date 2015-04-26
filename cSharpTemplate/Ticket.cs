@@ -17,8 +17,5 @@ namespace cSharpTemplate
         /// Place of ticket
         /// </summary>
         public int TicketPlace {get; set;}
-
-
-
     }
 }

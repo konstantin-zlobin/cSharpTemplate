@@ -41,6 +41,11 @@ namespace cSharpTemplate
 			return club_events;
 		}
 
+        /// <summary>
+        /// Sell ticket
+        /// </summary>
+        /// <param name="title">event title</param>
+        /// <param name="ticket">ticket</param>
         public void SellTicket(string title, Ticket ticket)
         {
             var clubEvent = club_events.Find(e => e.Title.Equals(title));
