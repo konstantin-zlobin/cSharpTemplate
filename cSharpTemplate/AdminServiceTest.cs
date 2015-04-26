@@ -47,5 +47,16 @@ using System.Collections.Generic;
         {
             return new ClubConcert(validTitle, DateTime.UtcNow.AddDays(-1), validSingersList, validTicketCategoryPrice);
         }
+
+        [Test]
+	    public void ClubConcertAvailableTickets_Test()
+        {
+            var clubConcert = new ClubConcert("Test Concert", DateTime.Now, new List<string> {"Metallica"},
+                validTicketCategoryPrice);
+
+            Assert.AreEqual(10, clubConcert.GetAvailableTicketsCount(TicketCategory.VIP));
+            Assert.AreEqual(25, clubConcert.GetAvailableTicketsCount(TicketCategory.Simple));
+            Assert.AreEqual(100, clubConcert.GetAvailableTicketsCount(TicketCategory.EnterOnly));
+        }
 	}
 }

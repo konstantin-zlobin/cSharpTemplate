@@ -3,13 +3,20 @@ using System.Collections.Generic;
 
 namespace cSharpTemplate
 {
-	public class ClubConcert
-	{
+    public class ClubConcert
+    {
+        private const int VipSeatsCount = 10;
+        private const int SimpleSeatsCount = 25;
+        private const int EnterOnlySeatsCount = 100;
+
 		public string Title {get; private set;}
         public DateTime DateAndTime { get; private set; }
         public List<string> SingersList { get; private set; }
 
         public Dictionary<TicketCategory, decimal> TicketCategoryPrice { get;  set; }
+        
+        private Dictionary<TicketCategory, List<Seat>> _seats = new Dictionary<TicketCategory, List<Seat>>();
+        
         
         public ClubConcert(string title, DateTime dateAndTime, List<string> singersList, Dictionary<TicketCategory, decimal> ticketCategoryPrice)
         {
@@ -17,6 +24,35 @@ namespace cSharpTemplate
             DateAndTime = dateAndTime;
             SingersList = singersList;
             TicketCategoryPrice = ticketCategoryPrice;
+
+            InitializeSeats();
+        }
+
+        private void InitializeSeats()
+        {
+            var vipList = new List<Seat>();
+            for (int i = 0; i < VipSeatsCount; i++)
+            {
+                vipList.Add(new Seat { Number = i + 1, Sold = false });
+            }
+
+            _seats.Add(TicketCategory.VIP, vipList);
+
+            var simpleList = new List<Seat>();
+            for (int i = 0; i < SimpleSeatsCount; i++)
+            {
+                simpleList.Add(new Seat { Number = i + 1, Sold = false });
+            }
+
+            _seats.Add(TicketCategory.Simple, simpleList);
+
+            var enterOnlyList = new List<Seat>();
+            for (int i = 0; i < EnterOnlySeatsCount; i++)
+            {
+                enterOnlyList.Add(new Seat { Number = i + 1, Sold = false });
+            }
+
+            _seats.Add(TicketCategory.EnterOnly, enterOnlyList);
         }
 
         public List<string> GetConcertValidationErrorsList()
@@ -36,13 +72,11 @@ namespace cSharpTemplate
 
             return result;
         }
-	}
 
-    public enum TicketCategory
-    {
-        VIP,
-        Simple,
-        EnterOnly
-    }
+	    public int GetAvailableTicketsCount(TicketCategory ticketCategory)
+	    {
+	        return _seats[ticketCategory].Count;
+	    }
+	}
 }
 
