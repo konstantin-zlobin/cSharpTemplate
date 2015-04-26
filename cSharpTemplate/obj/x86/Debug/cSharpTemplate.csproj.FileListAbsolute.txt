@@ -2,4 +2,3 @@ D:\XP_training\cSharpTemplate\cSharpTemplate\obj\x86\Debug\cSharpTemplate.exe
 D:\XP_training\cSharpTemplate\cSharpTemplate\obj\x86\Debug\cSharpTemplate.pdb
 D:\XP_training\cSharpTemplate\cSharpTemplate\bin\Debug\cSharpTemplate.exe
 D:\XP_training\cSharpTemplate\cSharpTemplate\bin\Debug\cSharpTemplate.pdb
-D:\XP_training\cSharpTemplate\cSharpTemplate\obj\x86\Debug\cSharpTemplate.csprojResolveAssemblyReference.cache
