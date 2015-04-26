@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace cSharpTemplate
 {
@@ -12,28 +13,35 @@ namespace cSharpTemplate
 			clubEvents = new List<ClubEvent> ();
 		}
 
-		public void AddEvent(ClubEvent clubEvent) 
+		public void AddEvent(ClubEvent newEvent) 
 		{
-			if (string.IsNullOrEmpty(clubEvent.Title))
+			if (string.IsNullOrEmpty(newEvent.Title))
 				throw new ArgumentOutOfRangeException("Title must be defined");
 
-			if (clubEvent.DateTime.Equals(DateTime.MinValue))
+			if (newEvent.DateTime.Equals(DateTime.MinValue))
 				throw new ArgumentOutOfRangeException("Date and time must be defined");
 
-			if (clubEvent.Artists == null)
+			if (newEvent.DateTime < DateTime.Today.AddDays(1))
+				throw new ArgumentOutOfRangeException("Date and time must be in future");
+
+			if (newEvent.Artists == null)
 				throw new ArgumentNullException("Artists must not be null");
-			if (clubEvent.Artists.Length < 1)
+			if (newEvent.Artists.Length < 1)
 				throw new ArgumentOutOfRangeException("There are no artists!");
 
-			if (clubEvent.VipPrice == 0)
+			if (newEvent.VipPrice == 0)
 				throw new ArgumentOutOfRangeException("VIP price must be defined");
-			if (clubEvent.TablePrice == 0)
+			if (newEvent.TablePrice == 0)
 				throw new ArgumentOutOfRangeException("Table price must be defined");
-			if (clubEvent.CheapestPrice == 0)
+			if (newEvent.CheapestPrice == 0)
 				throw new ArgumentOutOfRangeException("Input price must be defined");
 
+			if (clubEvents.Any(e => e.DateTime.Date == newEvent.DateTime.Date
+				&& e.Title == newEvent.Title))
+					throw new ArgumentOutOfRangeException("Event with the Same Date and Same title already in list");
 
-			clubEvents.Add(clubEvent);
+
+			clubEvents.Add(newEvent);
 		}
 
 		public List<ClubEvent> GetAllEvents() {

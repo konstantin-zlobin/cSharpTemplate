@@ -116,5 +116,47 @@ namespace cSharpTemplate
 				}
 			);
 		}
+
+		[Test]
+		public void AddEvenDateInPastValidattionFailed()
+		{
+			var adminService = new AdminService();
+			_clubEvent.DateTime = DateTime.Now.AddDays(-1);
+
+			Assert.Throws<ArgumentOutOfRangeException>(
+				delegate
+				{
+					adminService.AddEvent(_clubEvent);
+				}
+			);
+		}
+
+		[Test]
+		public void AddEvenDateTodayValidattionFailed()
+		{
+			var adminService = new AdminService();
+			_clubEvent.DateTime = DateTime.Today;
+
+			Assert.Throws<ArgumentOutOfRangeException>(
+				delegate
+				{
+					adminService.AddEvent(_clubEvent);
+				}
+			);
+		}
+
+		[Test]
+		public void AddEven_SameTitleSameDate_ValidattionFailed()
+		{
+			var adminService = new AdminService();
+			adminService.AddEvent(_clubEvent);
+
+			Assert.Throws<ArgumentOutOfRangeException>(
+				delegate
+				{
+					adminService.AddEvent(_clubEvent);
+				}
+			);
+		}
 	}
 }
