@@ -33,14 +33,14 @@ namespace cSharpTemplate
 		[Test]
 		public void SellEnteryTicket()
 		{
-			CashierService cashier = new CashierService(EnteryTickersTotal);
+			CashierService cashier = new CashierService(EnteryTickersTotal, VIPTickersTotal);
 			Assert.IsTrue(cashier.Sell(_event, PriceCategory.Entery));
 		}
 
 		[Test]
 		public void SellExtraEnteryTicket()
 		{
-			CashierService cashier = new CashierService(EnteryTickersTotal);
+			CashierService cashier = new CashierService(EnteryTickersTotal, VIPTickersTotal);
 			for(int i=0; i < EnteryTickersTotal; i++)
 				cashier.Sell(_event, PriceCategory.Entery);
 
@@ -50,31 +50,31 @@ namespace cSharpTemplate
 		[Test]
 		public void SellVIPTicket()
 		{
-			CashierService cashier = new CashierService(VIPTickersTotal);
-			Assert.IsTrue(cashier.Sell(_event, PriceCategory.VIP));
+			CashierService cashier = new CashierService(VIPTickersTotal, VIPTickersTotal);
+			Assert.IsTrue(cashier.SellVIP(_event, 1));
 		}
 
 		[Test]
 		public void SellExtraVIPTicket()
 		{
-			CashierService cashier = new CashierService(VIPTickersTotal);
+			CashierService cashier = new CashierService(VIPTickersTotal, VIPTickersTotal);
 			for (int i = 0; i < VIPTickersTotal; i++)
-				cashier.Sell(_event, PriceCategory.Entery);
+				cashier.SellVIP(_event, i);
 
-			Assert.IsFalse(cashier.Sell(_event, PriceCategory.VIP));
+			Assert.IsFalse(cashier.SellVIP(_event, VIPTickersTotal));
 		}
 
 		[Test]
 		public void SellTableTicket()
 		{
-			CashierService cashier = new CashierService(TableTickersTotal);
+			CashierService cashier = new CashierService(TableTickersTotal, VIPTickersTotal);
 			Assert.IsTrue(cashier.Sell(_event, PriceCategory.Table));
 		}
 
 		[Test]
 		public void SellExtraTableTicket()
 		{
-			CashierService cashier = new CashierService(TableTickersTotal);
+			CashierService cashier = new CashierService(TableTickersTotal, VIPTickersTotal);
 			for (int i = 0; i < TableTickersTotal; i++)
 				cashier.Sell(_event, PriceCategory.Entery);
 

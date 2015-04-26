@@ -10,21 +10,32 @@ namespace cSharpTemplate
 	{
 		public int EnterySold { get; private set; }
 
+		public bool[] VipSold { get; private set; }
 
-		//public EventsTickets(int entery)
-		//{
-		//	if (entery < 1)
-		//		throw new ArgumentOutOfRangeException("Tickets amouts must be defined");
-
-		//	EnteryTotal = entery;
-		//	EnterySold = 0;
-		//}
+		public EventsTickets(int vipCount)
+		{
+			VipSold = new bool[vipCount];
+		}
 
 		public void SellEntery()
 		{
 			EnterySold++;
 		}
 
+		public bool SellVIP(int i)
+		{
+			if (i >= VipSold.Length)
+			{
+				return false;
+			}
+
+			if (!VipSold[i])
+			{
+				VipSold[i] = true;
+				return true;
+			}
+			return false;
+		}
 	}
 	
 	class CashierService
@@ -32,10 +43,12 @@ namespace cSharpTemplate
 		Dictionary<ClubEvent, EventsTickets> eventTickets = new Dictionary<ClubEvent, EventsTickets>();
 
 		readonly int EnteryTotal;
+		readonly int VipTotal;
 
-		public CashierService(int entery)
+		public CashierService(int entery, int vipTotal)
 		{
 			EnteryTotal = entery;
+			VipTotal = vipTotal;
 		}
 		
 		internal bool Sell(ClubEvent clubEvent, PriceCategory priceCategory)
@@ -43,7 +56,7 @@ namespace cSharpTemplate
 			EventsTickets tickets;
 			if (!eventTickets.TryGetValue(clubEvent, out tickets))
 			{
-				tickets = new EventsTickets();
+				tickets = new EventsTickets(VipTotal);
 				eventTickets.Add(clubEvent, tickets);
 			}
 
@@ -54,6 +67,22 @@ namespace cSharpTemplate
 			}
 
 			return false;
+		}
+
+		internal bool SellVIP(ClubEvent clubEvent, int i)
+		{
+			EventsTickets tickets;
+			if (!eventTickets.TryGetValue(clubEvent, out tickets))
+			{
+				tickets = new EventsTickets(VipTotal);
+				eventTickets.Add(clubEvent, tickets);
+			}
+
+//			if (tickets.EnterySold < EnteryTotal)
+				return tickets.SellVIP(i);
+
+			return false;
+			
 		}
 	}
 }
