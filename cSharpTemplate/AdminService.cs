@@ -6,10 +6,12 @@ namespace cSharpTemplate
 	public class AdminService
 	{
 		private readonly List<ClubEvent> club_events;
+        private readonly Dictionary<string, List<int>> userToReservedTickets;
 
 		public AdminService()
 		{
 			club_events = new List<ClubEvent>();
+            userToReservedTickets = new Dictionary<string, List<int>>();
 		}
 
 		public void AddEvent(ClubEvent club_event)
@@ -46,6 +48,26 @@ namespace cSharpTemplate
 		{
 			return club_events;
 		}
+
+        public void ReserveTicket(string userName, List<int> ticketsIds, ClubEvent clubEvent)
+        {
+            foreach (int id in ticketsIds)
+            {
+                List<int> list;
+                if (clubEvent.ChangeTicketState(TicketState.Reserved, id))
+                {
+                    if (userToReservedTickets.TryGetValue(userName, out list))
+                        list.Add(id);
+                    else
+                        userToReservedTickets.Add(userName, new List<int>() { id });
+                }
+            }
+        }
+
+        public void SellTicket(int ticketId, ClubEvent clubEvent)
+        {
+            clubEvent.ChangeTicketState(TicketState.Sold, ticketId);
+        }
 	}
 }
 
