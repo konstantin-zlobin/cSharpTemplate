@@ -7,28 +7,42 @@ namespace cSharpTemplate
 	[TestFixture]
 	public class AdminServiceTest
 	{
-		[Test]
-		public void AddEvent_positive ()
+		ClubEvent _clubEvent;
+
+		[SetUp]
+		public void InitClubEvent()
 		{
-			var adminService = new AdminService();
-			var clubEvent = new ClubEvent();
-			clubEvent.Title = "Megashow 12345";
-
-			adminService.AddEvent(clubEvent);
-
-			Assert.Contains(clubEvent, adminService.GetAllEvents());
+			_clubEvent = new ClubEvent();
+			_clubEvent.Title = "Megashow 12345";
+			_clubEvent.DateTime = DateTime.Now.AddDays(2);
+			_clubEvent.Artists = new[] { "Volodya", "Oleg" };
+			_clubEvent.VipPrice = 4000;
+			_clubEvent.TablePrice = 2000;
+			_clubEvent.CheapestPrice = 400;
 		}
 
 		[Test]
-		public void AddEvent_validation_failed ()
+		public void AddEventWithRequiredData ()
 		{
 			var adminService = new AdminService();
-			var clubEvent = new ClubEvent();
 
-			Assert.Throws<NullReferenceException>(
+			adminService.AddEvent(_clubEvent);
+
+			Assert.Contains(_clubEvent, adminService.GetAllEvents());
+		}
+
+		[Test]
+		[TestCase(null)]
+		[TestCase("")]
+		public void AddEvenWithNullTitleValidattionFailed(string title)
+		{
+			var adminService = new AdminService();
+			_clubEvent.Title = title;
+
+			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate 
 				{ 
-					adminService.AddEvent(clubEvent);
+					adminService.AddEvent(_clubEvent);
 				}
 			);
 		}
