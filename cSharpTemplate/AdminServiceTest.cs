@@ -21,7 +21,7 @@ namespace cSharpTemplate
 			club_event.TicketPrices = new System.Collections.Generic.Dictionary<PriceCategory, decimal> 
 				{
 					{PriceCategory.VIP, 1000}, 
-					{PriceCategory.SimpleTable, 700},
+					{PriceCategory.Table, 700},
 					{PriceCategory.Entery, 500}
 				};
 			admin_service.AddEvent(club_event);
@@ -41,7 +41,7 @@ namespace cSharpTemplate
 			var ticketPrices = new System.Collections.Generic.Dictionary<PriceCategory, decimal> 
 				{
 				{PriceCategory.VIP, 1000}, 
-				{PriceCategory.SimpleTable, 700},
+				{PriceCategory.Table, 700},
 				{PriceCategory.Entery, 500}
 				};
 
