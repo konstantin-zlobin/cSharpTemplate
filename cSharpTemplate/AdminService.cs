@@ -22,6 +22,17 @@ namespace cSharpTemplate
             {
                 throw new Exception("validation failed: date must not be null");
             }
+
+            if (club_event.Date.Date <= DateTime.Now.Date)
+            {
+                throw new Exception("validation failed: date must be bigger then today");
+            }
+
+            if (club_event.Date.Date > DateTime.Now.AddMonths(6))
+            {
+                throw new Exception("validation failed: date must not be bigger then today + 6 month");
+            }
+
             if (club_event.Time == null)
             {
                 throw new Exception("validation failed: time must not be null");
