@@ -3,22 +3,23 @@
 namespace cSharpTemplate
 {
 	using NUnit.Framework;
+    using System.Collections.Generic;
 
 	[TestFixture]
 	public class AdminServiceTest
 	{
-		ClubEvent _clubEvent;
+		ClubEvent clubEvent;
 
 		[SetUp]
 		public void InitClubEvent()
 		{
-			_clubEvent = new ClubEvent();
-			_clubEvent.Title = "Megashow 12345";
-			_clubEvent.DateTime = DateTime.Now.AddDays(2);
-			_clubEvent.Artists = new[] { "Volodya", "Oleg" };
-			_clubEvent.VipPrice = 4000;
-			_clubEvent.TablePrice = 2000;
-			_clubEvent.CheapestPrice = 400;
+			clubEvent = new ClubEvent();
+			clubEvent.Title = "Megashow 12345";
+			clubEvent.DateAndTime = DateTime.Now.AddDays(2);
+			clubEvent.Artists = new List<string> { "Volodya", "Oleg" };
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.VIP, 4000);
+			clubEvent.TicketCategoriesToPrices.Add(TicketCategories.Simple, 2000);
+			clubEvent.TicketCategoriesToPrices.Add(TicketCategories.EnterOnly, 400); 
 		}
 
 		[Test]
@@ -26,135 +27,135 @@ namespace cSharpTemplate
 		{
 			var adminService = new AdminService();
 
-			adminService.AddEvent(_clubEvent);
+			adminService.AddEvent(clubEvent);
 
-			Assert.Contains(_clubEvent, adminService.GetAllEvents());
+			Assert.Contains(clubEvent, adminService.GetAllEvents());
 		}
 
 		[Test]
 		[TestCase(null)]
 		[TestCase("")]
-		public void AddEvenWithNullTitleValidattionFailed(string title)
+		public void AddEvenWithNullTitleValidationFailed(string title)
 		{
 			var adminService = new AdminService();
-			_clubEvent.Title = title;
+			clubEvent.Title = title;
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate 
 				{ 
-					adminService.AddEvent(_clubEvent);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}
 
 		[Test]
-		public void AddEvenWithNullArtistsValidattionFailed()
+		public void AddEvenWithNullArtistsValidationFailed()
 		{
 			var adminService = new AdminService();
-			_clubEvent.Artists = null;
+			clubEvent.Artists = null;
 
 			Assert.Throws<ArgumentNullException>(
 				delegate
 				{
-					adminService.AddEvent(_clubEvent);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}
 
 		[Test]
-		public void AddEvenWithEmptyArtistsValidattionFailed()
+		public void AddEvenWithEmptyArtistsValidationFailed()
 		{
 			var adminService = new AdminService();
-			_clubEvent.Artists = new string[] {};
+			clubEvent.Artists = new List<string>();
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate
 				{
-					adminService.AddEvent(_clubEvent);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}
 
 		[Test]
-		public void AddEvenWithoutVipPriceValidattionFailed()
+		public void AddEvenWithoutVipPriceValidationFailed()
 		{
 			var adminService = new AdminService();
-			_clubEvent.VipPrice = 0;
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.VIP, 0);
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate
 				{
-					adminService.AddEvent(_clubEvent);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}
 
 		[Test]
-		public void AddEvenWithoutTablePriceValidattionFailed()
+		public void AddEvenWithoutTablePriceValidationFailed()
 		{
 			var adminService = new AdminService();
-			_clubEvent.TablePrice = 0;
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.Simple, 0);
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate
 				{
-					adminService.AddEvent(_clubEvent);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}
 
 		[Test]
-		public void AddEvenWithoutCheapestPriceValidattionFailed()
+		public void AddEvenWithoutCheapestPriceValidationFailed()
 		{
 			var adminService = new AdminService();
-			_clubEvent.CheapestPrice = 0;
+            clubEvent.TicketCategoriesToPrices.Add(TicketCategories.EnterOnly, 0); 
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate
 				{
-					adminService.AddEvent(_clubEvent);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}
 
 		[Test]
-		public void AddEvenDateInPastValidattionFailed()
+		public void AddEvenDateInPastValidationFailed()
 		{
 			var adminService = new AdminService();
-			_clubEvent.DateTime = DateTime.Now.AddDays(-1);
+			clubEvent.DateAndTime = DateTime.Now.AddDays(-1);
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate
 				{
-					adminService.AddEvent(_clubEvent);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}
 
 		[Test]
-		public void AddEvenDateTodayValidattionFailed()
+		public void AddEvenDateTodayValidationFailed()
 		{
 			var adminService = new AdminService();
-			_clubEvent.DateTime = DateTime.Today;
+			clubEvent.DateAndTime = DateTime.Today;
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate
 				{
-					adminService.AddEvent(_clubEvent);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}
 
 		[Test]
-		public void AddEven_SameDateSameTitle_ValidattionFailed()
+		public void AddEven_SameDateSameTitle_ValidationFailed()
 		{
 			var adminService = new AdminService();
-			adminService.AddEvent(_clubEvent);
+			adminService.AddEvent(clubEvent);
 
 			Assert.Throws<ArgumentOutOfRangeException>(
 				delegate
 				{
-					adminService.AddEvent(_clubEvent);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}

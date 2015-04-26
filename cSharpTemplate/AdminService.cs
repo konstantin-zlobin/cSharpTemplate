@@ -18,25 +18,25 @@ namespace cSharpTemplate
 			if (string.IsNullOrEmpty(newEvent.Title))
 				throw new ArgumentOutOfRangeException("Title must be defined");
 
-			if (newEvent.DateTime.Equals(DateTime.MinValue))
+			if (newEvent.DateAndTime.Equals(DateTime.MinValue))
 				throw new ArgumentOutOfRangeException("Date and time must be defined");
 
-			if (newEvent.DateTime < DateTime.Today.AddDays(1))
+			if (newEvent.DateAndTime < DateTime.Today.AddDays(1))
 				throw new ArgumentOutOfRangeException("Date and time must be in future");
 
 			if (newEvent.Artists == null)
 				throw new ArgumentNullException("Artists must not be null");
-			if (newEvent.Artists.Length < 1)
+			if (newEvent.Artists.Count < 1)
 				throw new ArgumentOutOfRangeException("There are no artists!");
 
-			if (newEvent.VipPrice == 0)
+			if (!newEvent.TicketCategoriesToPrices.ContainsKey(TicketCategories.VIP))
 				throw new ArgumentOutOfRangeException("VIP price must be defined");
-			if (newEvent.TablePrice == 0)
+            if (!newEvent.TicketCategoriesToPrices.ContainsKey(TicketCategories.Simple))
 				throw new ArgumentOutOfRangeException("Table price must be defined");
-			if (newEvent.CheapestPrice == 0)
+            if (!newEvent.TicketCategoriesToPrices.ContainsKey(TicketCategories.EnterOnly))
 				throw new ArgumentOutOfRangeException("Input price must be defined");
 
-			if (clubEvents.Any(e => e.DateTime.Date == newEvent.DateTime.Date
+			if (clubEvents.Any(e => e.DateAndTime.Date == newEvent.DateAndTime.Date
 				&& e.Title == newEvent.Title))
 					throw new ArgumentOutOfRangeException("Event with the Same Date and Same title already in list");
 
@@ -47,6 +47,28 @@ namespace cSharpTemplate
 		public List<ClubEvent> GetAllEvents() {
 			return clubEvents;
 		}
+
+        public void SellEventTicket(Guid clubEventGuid, TicketCategories ticketCategory)
+        {
+            if (clubEventGuid == null)
+                throw new ArgumentException("clubEventGuid is null");
+
+            var clubEvent = clubEvents.FirstOrDefault(ce => ce.ID == clubEventGuid);
+
+            if (clubEvent != null)
+                clubEvent.SellTicket(ticketCategory);
+        }
+
+        public void SellEventTicket(Guid clubEventGuid, int ticketId)
+        {
+            if (clubEventGuid == null)
+                throw new ArgumentException("clubEventGuid is null");
+
+            var clubEvent = clubEvents.FirstOrDefault(ce => ce.ID == clubEventGuid);
+
+            if (clubEvent != null)
+                clubEvent.SellTicket(ticketId);
+        }
 	}
 }
 
