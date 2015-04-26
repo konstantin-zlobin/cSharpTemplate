@@ -43,7 +43,7 @@ namespace cSharpTemplate
 
         public Ticket BookTicket(TicketCategories category, string buyerName)
 	    {
-            var ticketToBook = Tickets.FirstOrDefault(t => t.Category == category && t.Status == TicketStatus.Free);
+            var ticketToBook = Tickets.FirstOrDefault(t => t.Category == category && (t.Status == TicketStatus.Free|| (t.Status == TicketStatus.Booked && t.BookingExpiredDate < DateTime.Now)));
 
             if (ticketToBook != null)
             {
@@ -61,7 +61,7 @@ namespace cSharpTemplate
             var ticketToBook = Tickets.FirstOrDefault(t => t.ID == id);
 
             if (ticketToBook != null)
-                if (ticketToBook.Status == TicketStatus.Free)
+                if (ticketToBook.Status == TicketStatus.Free || (ticketToBook.Status == TicketStatus.Booked && ticketToBook.BookingExpiredDate < DateTime.Now))
                 {
                     ticketToBook.Status = TicketStatus.Booked;
                     ticketToBook.BookingDate = DateTime.Now;
