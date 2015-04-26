@@ -146,7 +146,7 @@ namespace cSharpTemplate
 		}
 
 		[Test]
-		public void AddEven_SameTitleSameDate_ValidattionFailed()
+		public void AddEven_SameDateSameTitle_ValidattionFailed()
 		{
 			var adminService = new AdminService();
 			adminService.AddEvent(_clubEvent);
@@ -157,6 +157,12 @@ namespace cSharpTemplate
 					adminService.AddEvent(_clubEvent);
 				}
 			);
+		}
+
+		[Test]
+		public void AddEven_SameDateDifferentTitle()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
