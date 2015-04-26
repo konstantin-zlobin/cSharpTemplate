@@ -151,5 +151,53 @@ namespace cSharpTemplate
 			Assert.IsFalse(bookedSecond);
 		}
 
+		[Test]
+		public void SellBookedTicket_Test()
+		{
+			var adminService = new AdminService();
+			var club_event = new ClubEvent();
+			club_event.Title = "Megashow 12345";
+			club_event.Date = new DateTime(2015, 5, 1, 18, 0, 0); ;
+			club_event.Time = new DateTime(2015, 5, 1, 18, 0, 0); ;
+			club_event.Performers = new List<string>() { "1" };
+			club_event.PriceList.Add(TicketCategory.VIP, 1);
+			adminService.AddEvent(club_event);
+
+			var user = "test user";
+			var ticket = new Ticket() { Category = TicketCategory.VIP, User = user, TicketPlace = 1 };
+
+			adminService.BookTicket(club_event.Title, ticket);
+
+			var sold = adminService.SellBookedTicket(club_event.Title, ticket);
+
+			Assert.IsTrue(sold);
+		}
+
+		[Test]
+		public void SellAnotherBookedTicket_Test()
+		{
+			var adminService = new AdminService();
+			var club_event = new ClubEvent();
+			club_event.Title = "Megashow 12345";
+			club_event.Date = new DateTime(2015, 5, 1, 18, 0, 0); ;
+			club_event.Time = new DateTime(2015, 5, 1, 18, 0, 0); ;
+			club_event.Performers = new List<string>() { "1" };
+			club_event.PriceList.Add(TicketCategory.VIP, 1);
+			adminService.AddEvent(club_event);
+
+			var user = "test user";
+			var ticket = new Ticket() { Category = TicketCategory.VIP, User = user, TicketPlace = 1 };
+
+			adminService.BookTicket(club_event.Title, ticket);
+
+			ticket.User = null;
+
+			Assert.Throws<Exception>(
+				delegate 
+				{ 
+			adminService.SellTicket(club_event.Title, ticket);
+				});
+		}
+
 	}
 }

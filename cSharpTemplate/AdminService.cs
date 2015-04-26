@@ -151,6 +151,23 @@ namespace cSharpTemplate
 					return null;
 			}
 		}
+
+		internal bool SellBookedTicket(string title, Ticket ticket)
+		{
+			var clubEvent = club_events.Find(e => e.Title.Equals(title));
+			Ticket bookedTicket = FindTicket(clubEvent, ticket);
+			if (bookedTicket == null)
+			{
+				throw new InvalidOperationException("Booked ticket not found");
+			}
+			if (bookedTicket.User != ticket.User)
+			{
+				throw new InvalidOperationException("Ticket booked by another person");
+			}
+
+			bookedTicket.IsSold = true;
+			return true;
+		}
 	}
 }
 
