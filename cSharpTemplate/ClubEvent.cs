@@ -26,6 +26,6 @@ namespace cSharpTemplate
 
         public Dictionary<TicketCategory, decimal> PriceList = new Dictionary<TicketCategory, decimal>();
 
-        public List<Ticket> SoldTickets = new List<Ticket>();
-    }
+        public List<Ticket> Tickets = new List<Ticket>();
+	}
 }

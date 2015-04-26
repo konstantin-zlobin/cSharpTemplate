@@ -17,5 +17,11 @@ namespace cSharpTemplate
         /// Place of ticket
         /// </summary>
         public int TicketPlace {get; set;}
-    }
+
+		public string User { get; set; }
+
+		public bool IsBooked { get { return string.IsNullOrEmpty(User); } }
+
+		public  bool IsSold { get; set; }
+	}
 }

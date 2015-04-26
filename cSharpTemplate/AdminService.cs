@@ -6,6 +6,10 @@ namespace cSharpTemplate
 {
 	public class AdminService
 	{
+		const int VIPTotal = 10;
+		const int GeneralTotal = 25;
+		const int EntranceTotal = 100;
+
 		private readonly List<ClubEvent> club_events;
 
 		public AdminService ()
@@ -63,37 +67,90 @@ namespace cSharpTemplate
             switch (ticket.Category)
             {
                 case TicketCategory.VIP :
-                    if (clubEvent.SoldTickets.Count(e => e.Category == TicketCategory.VIP) == 10)
+					if (clubEvent.Tickets.Count(e => e.Category == TicketCategory.VIP) == VIPTotal)
                     {
                         throw new Exception("No more VIP tickets");
                     }
-                    if (clubEvent.SoldTickets.Any(e => e.Category == TicketCategory.VIP && e.TicketPlace == ticket.TicketPlace))
+                    if (clubEvent.Tickets.Any(e => e.Category == TicketCategory.VIP && e.TicketPlace == ticket.TicketPlace))
                     {
                         throw new Exception("This ticket is sold");
                     }
                     break;
 
                 case TicketCategory.General:
-                    if (clubEvent.SoldTickets.Count(e => e.Category == TicketCategory.General) == 25)
+					if (clubEvent.Tickets.Count(e => e.Category == TicketCategory.General) == GeneralTotal)
                     {
                         throw new Exception("No more VIP tickets");
                     }
-                    if (clubEvent.SoldTickets.Any(e => e.Category == TicketCategory.General && e.TicketPlace == ticket.TicketPlace))
+                    if (clubEvent.Tickets.Any(e => e.Category == TicketCategory.General && e.TicketPlace == ticket.TicketPlace))
                     {
                         throw new Exception("This ticket is sold");
                     }
                     break;
 
                 case TicketCategory.Entrance:
-                    if (clubEvent.SoldTickets.Count(e => e.Category == TicketCategory.Entrance) == 100)
+					if (clubEvent.Tickets.Count(e => e.Category == TicketCategory.Entrance) == EntranceTotal)
                     {
                         throw new Exception("No more VIP tickets");
                     }
                     break;
             }
             
-            clubEvent.SoldTickets.Add(ticket);
+            clubEvent.Tickets.Add(ticket);
+			ticket.IsSold = true;
         }
+
+		internal bool BookTicket(string title, Ticket ticket)
+		{
+			var clubEvent = club_events.Find(e => e.Title.Equals(title));
+			Ticket processedTicket = FindTicket(clubEvent, ticket);
+			if (processedTicket == null)
+			{
+				switch (ticket.Category)
+				{
+					case TicketCategory.VIP:
+						if (clubEvent.Tickets.Count(e => e.Category == TicketCategory.VIP) == VIPTotal)
+						{
+							return false;
+						}
+						break;
+
+					case TicketCategory.General:
+						if (clubEvent.Tickets.Count(e => e.Category == TicketCategory.General) == GeneralTotal)
+						{
+							return false;
+						}
+						break;
+
+					//case TicketCategory.Entrance:
+					//	if (clubEvent.Tickets.Count(e => e.Category == TicketCategory.Entrance) == EntranceTotal)
+					//	{
+					//		throw new Exception("No more VIP tickets");
+					//	}
+					//	break;
+				}
+
+				clubEvent.Tickets.Add(ticket);
+				return true;
+			}
+
+			return false;
+		}
+
+		private Ticket FindTicket(ClubEvent clubEvent, Ticket ticket)
+		{
+			switch (ticket.Category)
+			{
+				case TicketCategory.VIP:
+					return clubEvent.Tickets.Find(e => e.Category == TicketCategory.VIP && e.TicketPlace == ticket.TicketPlace);
+
+				case TicketCategory.General:
+					return (clubEvent.Tickets.Find(e => e.Category == TicketCategory.General && e.TicketPlace == ticket.TicketPlace));
+
+				default:
+					return null;
+			}
+		}
 	}
 }
 
