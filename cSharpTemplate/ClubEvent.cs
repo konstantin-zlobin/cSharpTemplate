@@ -25,5 +25,7 @@ namespace cSharpTemplate
         public IEnumerable<string> Performers { get; set; }
 
         public Dictionary<TicketCategory, decimal> PriceList = new Dictionary<TicketCategory, decimal>();
+
+        public List<Ticket> SoldTickets = new List<Ticket>();
     }
 }

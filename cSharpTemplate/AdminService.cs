@@ -40,6 +40,44 @@ namespace cSharpTemplate
 		public List<ClubEvent> GetAllEvents() {
 			return club_events;
 		}
+
+        public void SellTicket(string title, Ticket ticket)
+        {
+            var clubEvent = club_events.Find(e => e.Title.Equals(title));
+            switch (ticket.Category)
+            {
+                case TicketCategory.VIP :
+                    if (clubEvent.SoldTickets.Count(e => e.Category == TicketCategory.VIP) == 10)
+                    {
+                        throw new Exception("No more VIP tickets");
+                    }
+                    if (clubEvent.SoldTickets.Any(e => e.Category == TicketCategory.VIP && e.TicketPlace == ticket.TicketPlace))
+                    {
+                        throw new Exception("This ticket is sold");
+                    }
+                    break;
+
+                case TicketCategory.General:
+                    if (clubEvent.SoldTickets.Count(e => e.Category == TicketCategory.General) == 25)
+                    {
+                        throw new Exception("No more VIP tickets");
+                    }
+                    if (clubEvent.SoldTickets.Any(e => e.Category == TicketCategory.General && e.TicketPlace == ticket.TicketPlace))
+                    {
+                        throw new Exception("This ticket is sold");
+                    }
+                    break;
+
+                case TicketCategory.Entrance:
+                    if (clubEvent.SoldTickets.Count(e => e.Category == TicketCategory.Entrance) == 100)
+                    {
+                        throw new Exception("No more VIP tickets");
+                    }
+                    break;
+            }
+            
+            clubEvent.SoldTickets.Add(ticket);
+        }
 	}
 }
 
