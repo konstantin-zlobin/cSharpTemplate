@@ -32,7 +32,7 @@ namespace cSharpTemplate
         }
 
         [Test]
-        public void PerformersList_Test()
+        public void Performers_Test()
         {
             var performers = new List<string>();
             performers.Add("Robbie Williams");
@@ -43,6 +43,19 @@ namespace cSharpTemplate
             club_event.Performers = performers;
 
             Assert.AreEqual(club_event.Performers, performers);
+        }
+
+        [Test]
+        public void AddPrice_Test()
+        {
+            var club_event = new ClubEvent();
+            var category = TicketCategory.VIP;
+            var price = 1000;
+            club_event.PriceList.Add(category, price);
+
+            decimal actualPrice;
+            club_event.PriceList.TryGetValue(category, out actualPrice);
+            Assert.AreEqual(actualPrice, price);
         }
     }
 }
