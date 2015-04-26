@@ -2,9 +2,9 @@
 
 namespace cSharpTemplate
 {
-	public struct ClubEvent
+	public class ClubEvent
 	{
-		public String title;
+		public String Title {get; set;}
 	}
 }
 

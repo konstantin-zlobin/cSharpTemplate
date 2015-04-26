@@ -10,22 +10,25 @@ namespace cSharpTemplate
 		[Test]
 		public void AddEvent_positive ()
 		{
-			var admin_service = new AdminService ();
-			var club_event = new ClubEvent ();
-			club_event.title = "Megashow 12345";
-			admin_service.AddEvent (club_event);
-			Assert.Contains (club_event, admin_service.GetAllEvents ());
+			var adminService = new AdminService();
+			var clubEvent = new ClubEvent();
+			clubEvent.Title = "Megashow 12345";
+
+			adminService.AddEvent(clubEvent);
+
+			Assert.Contains(clubEvent, adminService.GetAllEvents());
 		}
 
 		[Test]
 		public void AddEvent_validation_failed ()
 		{
-			var admin_service = new AdminService ();
-			var club_event = new ClubEvent ();
-			Assert.Throws<Exception>(
+			var adminService = new AdminService();
+			var clubEvent = new ClubEvent();
+
+			Assert.Throws<NullReferenceException>(
 				delegate 
 				{ 
-					admin_service.AddEvent (club_event);
+					adminService.AddEvent(clubEvent);
 				}
 			);
 		}
