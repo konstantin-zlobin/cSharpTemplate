@@ -23,6 +23,11 @@ namespace cSharpTemplate
                 throw new Exception("validation failed: DateTime must not be null");
             }
 
+            if (club_event.EventDateTime.Date == DateTime.Now.Date || club_event.EventDateTime > DateTime.Now.AddMonths(6))
+            {
+                throw new Exception("validation failed: Date must not be today");
+            }
+
             if (club_event.Artists == null || club_event.Artists.Count == 0)
             {
                 throw new Exception("validation failed: Artists list must not be empty");
