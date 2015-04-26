@@ -14,7 +14,7 @@ namespace cSharpTemplate
 
 		public void AddEvent(ClubEvent club_event) 
 		{
-			if (club_event.title == null) {
+			if (club_event.Title == null) {
 				throw new Exception ("validation failed: title must not be null");
 			}
 			club_events.Add (club_event);

@@ -1,24 +1,23 @@
 ﻿using System;
+using NUnit.Framework;
 
 namespace cSharpTemplate
 {
-	using NUnit.Framework;
-
 	[TestFixture]
-	public class AdminServiceTest
+	public class AdminServiceTests
 	{
 		[Test]
-		public void AddEvent_positive ()
+		public void AddEvent_Test()
 		{
 			var admin_service = new AdminService ();
 			var club_event = new ClubEvent ();
-			club_event.title = "Megashow 12345";
+			club_event.Title = "Megashow 12345";
 			admin_service.AddEvent (club_event);
 			Assert.Contains (club_event, admin_service.GetAllEvents ());
 		}
 
 		[Test]
-		public void AddEvent_validation_failed ()
+		public void AddEvent_NoTitle_ThrowsException_Test()
 		{
 			var admin_service = new AdminService ();
 			var club_event = new ClubEvent ();
