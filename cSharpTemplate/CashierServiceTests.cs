@@ -30,17 +30,23 @@ namespace cSharpTemplate
 				};
 		}
 
+
+		private CashierService CreateCashier()
+		{
+			return new CashierService(EnteryTickersTotal, VIPTickersTotal, TableTickersTotal);
+		}
+
 		[Test]
 		public void SellEnteryTicket()
 		{
-			CashierService cashier = new CashierService(EnteryTickersTotal, VIPTickersTotal);
+			CashierService cashier = CreateCashier();
 			Assert.IsTrue(cashier.Sell(_event, PriceCategory.Entery));
 		}
 
 		[Test]
 		public void SellExtraEnteryTicket()
 		{
-			CashierService cashier = new CashierService(EnteryTickersTotal, VIPTickersTotal);
+			CashierService cashier = CreateCashier();
 			for(int i=0; i < EnteryTickersTotal; i++)
 				cashier.Sell(_event, PriceCategory.Entery);
 
@@ -50,14 +56,14 @@ namespace cSharpTemplate
 		[Test]
 		public void SellVIPTicket()
 		{
-			CashierService cashier = new CashierService(VIPTickersTotal, VIPTickersTotal);
+			CashierService cashier = CreateCashier();
 			Assert.IsTrue(cashier.SellVIP(_event, 1));
 		}
 
 		[Test]
 		public void SellExtraVIPTicket()
 		{
-			CashierService cashier = new CashierService(VIPTickersTotal, VIPTickersTotal);
+			CashierService cashier = CreateCashier();
 			for (int i = 0; i < VIPTickersTotal; i++)
 				cashier.SellVIP(_event, i);
 
@@ -67,18 +73,18 @@ namespace cSharpTemplate
 		[Test]
 		public void SellTableTicket()
 		{
-			CashierService cashier = new CashierService(TableTickersTotal, VIPTickersTotal);
-			Assert.IsTrue(cashier.Sell(_event, PriceCategory.Table));
+			CashierService cashier = CreateCashier();
+			Assert.IsTrue(cashier.SellTable(_event, 1));
 		}
 
 		[Test]
 		public void SellExtraTableTicket()
 		{
-			CashierService cashier = new CashierService(TableTickersTotal, VIPTickersTotal);
+			CashierService cashier = CreateCashier();
 			for (int i = 0; i < TableTickersTotal; i++)
-				cashier.Sell(_event, PriceCategory.Entery);
+				cashier.SellTable(_event, i);
 
-			Assert.IsFalse(cashier.Sell(_event, PriceCategory.Table));
+			Assert.IsFalse(cashier.SellTable(_event, TableTickersTotal));
 		}
 	}
 }

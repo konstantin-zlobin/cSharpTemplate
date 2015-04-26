@@ -11,10 +11,12 @@ namespace cSharpTemplate
 		public int EnterySold { get; private set; }
 
 		public bool[] VipSold { get; private set; }
+		public bool[] TableSold { get; private set; }
 
-		public EventsTickets(int vipCount)
+		public EventsTickets(int vipCount, int tableCount)
 		{
 			VipSold = new bool[vipCount];
+			TableSold = new bool[tableCount];
 		}
 
 		public void SellEntery()
@@ -36,6 +38,21 @@ namespace cSharpTemplate
 			}
 			return false;
 		}
+
+		public bool SellTable(int i)
+		{
+			if (i >= TableSold.Length)
+			{
+				return false;
+			}
+
+			if (!TableSold[i])
+			{
+				TableSold[i] = true;
+				return true;
+			}
+			return false;
+		}
 	}
 	
 	class CashierService
@@ -44,11 +61,13 @@ namespace cSharpTemplate
 
 		readonly int EnteryTotal;
 		readonly int VipTotal;
+		readonly int TableTotal;
 
-		public CashierService(int entery, int vipTotal)
+		public CashierService(int entery, int vipTotal, int tableTotal)
 		{
 			EnteryTotal = entery;
 			VipTotal = vipTotal;
+			TableTotal = tableTotal;
 		}
 		
 		internal bool Sell(ClubEvent clubEvent, PriceCategory priceCategory)
@@ -56,7 +75,7 @@ namespace cSharpTemplate
 			EventsTickets tickets;
 			if (!eventTickets.TryGetValue(clubEvent, out tickets))
 			{
-				tickets = new EventsTickets(VipTotal);
+				tickets = new EventsTickets(VipTotal, TableTotal);
 				eventTickets.Add(clubEvent, tickets);
 			}
 
@@ -74,15 +93,23 @@ namespace cSharpTemplate
 			EventsTickets tickets;
 			if (!eventTickets.TryGetValue(clubEvent, out tickets))
 			{
-				tickets = new EventsTickets(VipTotal);
+				tickets = new EventsTickets(VipTotal, TableTotal);
 				eventTickets.Add(clubEvent, tickets);
 			}
 
-//			if (tickets.EnterySold < EnteryTotal)
-				return tickets.SellVIP(i);
+			return tickets.SellVIP(i);
+		}
 
-			return false;
-			
+		internal bool SellTable(ClubEvent clubEvent, int i)
+		{
+			EventsTickets tickets;
+			if (!eventTickets.TryGetValue(clubEvent, out tickets))
+			{
+				tickets = new EventsTickets(VipTotal, TableTotal);
+				eventTickets.Add(clubEvent, tickets);
+			}
+
+			return tickets.SellTable(i);
 		}
 	}
 }
