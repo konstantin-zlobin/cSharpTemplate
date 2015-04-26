@@ -5,22 +5,24 @@ namespace cSharpTemplate
 {
 	public class AdminService
 	{
-		private readonly List<ClubEvent> club_events;
+		private readonly List<ClubConcert> club_events;
 
 		public AdminService ()
 		{
-			club_events = new List<ClubEvent> ();
+			club_events = new List<ClubConcert> ();
 		}
 
-		public void AddEvent(ClubEvent club_event) 
+		public void AddEvent(ClubConcert club_event) 
 		{
-			if (club_event.title == null) {
-				throw new Exception ("validation failed: title must not be null");
+            var errorsList = club_event.GetConcertValidationErrorsList();
+            if (errorsList.Count != 0)
+            {
+				throw new Exception ("validation failed: " + String.Join(@"\n\r", errorsList));
 			}
 			club_events.Add (club_event);
 		}
 
-		public List<ClubEvent> GetAllEvents() {
+		public List<ClubConcert> GetAllEvents() {
 			return club_events;
 		}
 	}

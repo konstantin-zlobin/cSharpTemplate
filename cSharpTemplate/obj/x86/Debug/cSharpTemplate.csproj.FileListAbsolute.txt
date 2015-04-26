@@ -1,0 +1,11 @@
+d:\USERS\Vladimir_Chulanov\EPAM\Trainings\XP\code\net\cSharpTemplate\cSharpTemplate\bin\Debug\cSharpTemplate.exe
+d:\USERS\Vladimir_Chulanov\EPAM\Trainings\XP\code\net\cSharpTemplate\cSharpTemplate\bin\Debug\cSharpTemplate.pdb
+d:\USERS\Vladimir_Chulanov\EPAM\Trainings\XP\code\net\cSharpTemplate\cSharpTemplate\bin\Debug\nunit.framework.dll
+d:\USERS\Vladimir_Chulanov\EPAM\Trainings\XP\code\net\cSharpTemplate\cSharpTemplate\bin\Debug\nunit.framework.xml
+d:\USERS\Vladimir_Chulanov\EPAM\Trainings\XP\code\net\cSharpTemplate\cSharpTemplate\obj\x86\Debug\cSharpTemplate.csprojResolveAssemblyReference.cache
+d:\USERS\Vladimir_Chulanov\EPAM\Trainings\XP\code\net\cSharpTemplate\cSharpTemplate\obj\x86\Debug\cSharpTemplate.exe
+d:\USERS\Vladimir_Chulanov\EPAM\Trainings\XP\code\net\cSharpTemplate\cSharpTemplate\obj\x86\Debug\cSharpTemplate.pdb
+D:\XP_training\cSharpTemplate\cSharpTemplate\obj\x86\Debug\cSharpTemplate.exe
+D:\XP_training\cSharpTemplate\cSharpTemplate\obj\x86\Debug\cSharpTemplate.pdb
+D:\XP_training\cSharpTemplate\cSharpTemplate\bin\Debug\cSharpTemplate.exe
+D:\XP_training\cSharpTemplate\cSharpTemplate\bin\Debug\cSharpTemplate.pdb
