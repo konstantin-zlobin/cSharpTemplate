@@ -84,11 +84,40 @@ namespace cSharpTemplate
             Seat availableSeat;
             if (number.HasValue)
             {
-                availableSeat = _seats[ticketCategory].FirstOrDefault(seat => !seat.Sold && seat.Number == number);
+                availableSeat = _seats[ticketCategory].FirstOrDefault(
+                    seat => !seat.Sold && 
+                        seat.Number == number && 
+                        (seat.ReserveTime == DateTime.MinValue || seat.ReserveTime.AddMinutes(30) < DateTime.Now));
             }
             else
             {
-                availableSeat = _seats[ticketCategory].FirstOrDefault(seat => !seat.Sold);
+                availableSeat = _seats[ticketCategory].FirstOrDefault(seat => !seat.Sold &&
+                        (seat.ReserveTime == DateTime.MinValue || seat.ReserveTime.AddMinutes(30) < DateTime.Now));
+            }
+            return availableSeat;
+        }
+
+        public bool IsTicketReserved(string buyerFIO, TicketCategory ticketCategory, int? number = null)
+        {
+            return _seats[ticketCategory].Any(s => 
+                s.BuyerFIO != null && s.BuyerFIO.Equals(buyerFIO) && 
+                (number == null || s.Number == number.Value) && 
+                s.ReserveTime.AddMinutes(30) > DateTime.Now);
+        }
+
+        public Seat GetReservedTicket(TicketCategory ticketCategory, string buyerFIO, int? number)
+        {
+            Seat availableSeat;
+            if (number.HasValue)
+            {
+                availableSeat = _seats[ticketCategory].FirstOrDefault(
+                    seat => !seat.Sold &&
+                        seat.Number == number &&
+                        seat.BuyerFIO.Equals(buyerFIO));
+            }
+            else
+            {
+                availableSeat = _seats[ticketCategory].FirstOrDefault(seat => !seat.Sold && seat.BuyerFIO.Equals(buyerFIO));
             }
             return availableSeat;
         }

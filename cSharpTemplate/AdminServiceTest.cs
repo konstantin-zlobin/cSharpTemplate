@@ -104,5 +104,43 @@ using System.Collections.Generic;
 	            }
 	            );
         }
+
+        [Test]
+        public void ClubReserveTicket_Test()
+        {
+            var admin_service = new AdminService();
+            var clubConcert = new ClubConcert("Test Concert", DateTime.Now, new List<string> { "Metallica" },
+                validTicketCategoryPrice);
+
+            admin_service.AddEvent(clubConcert);
+           
+            Assert.Throws<Exception>(
+                delegate
+                {
+                    admin_service.ReserveTicket(clubConcert, TicketCategory.EnterOnly, 0, "");
+                }
+            );
+
+            admin_service.ReserveTicket(clubConcert, TicketCategory.VIP, 1, "Name", 3);
+
+            Assert.IsTrue(clubConcert.IsTicketReserved("Name", TicketCategory.VIP, 3));
+
+            Assert.Throws<Exception>(
+                delegate
+                {
+                    admin_service.ReserveTicket(clubConcert, TicketCategory.VIP, 2, "Name1", 3);
+                }
+            );
+
+            admin_service.SellTicket(clubConcert, TicketCategory.VIP, "Name", 3);
+
+            Assert.Throws<Exception>(
+                delegate
+                {
+                    admin_service.SellTicket(clubConcert, TicketCategory.VIP, 3);
+                }
+            );
+
+        }
 	}
 }

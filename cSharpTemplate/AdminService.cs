@@ -26,6 +26,22 @@ namespace cSharpTemplate
 			return club_events;
 		}
 
+        public Seat SellTicket(ClubConcert clubConcert, TicketCategory ticketCategory, string buyerFIO, int? seatNumber = null)
+        {
+            Seat seat = clubConcert.GetReservedTicket(ticketCategory, buyerFIO, seatNumber);
+
+            if (seat != null)
+            {
+                seat.Sold = true;
+            }
+            else
+            {
+                throw new Exception("Ticket not exists or already sold.");
+            }
+
+            return seat;
+        }
+
 	    public Seat SellTicket(ClubConcert clubConcert, TicketCategory ticketCategory, int? seatNumber = null)
 	    {
             Seat seat = clubConcert.GetFreeTicket(ticketCategory, seatNumber);
@@ -41,6 +57,25 @@ namespace cSharpTemplate
 
 	        return seat;
 	    }
+
+        public void ReserveTicket(ClubConcert clubConcert, TicketCategory ticketCategory, int transactionID, string buyerFIO, int? seatNumber = null)
+        {
+            if (string.IsNullOrWhiteSpace(buyerFIO))
+                throw new Exception("FIO must not be empty");
+
+            Seat seat = clubConcert.GetFreeTicket(ticketCategory, seatNumber);
+
+            if (seat != null)
+            {
+                seat.TransactionID = transactionID;
+                seat.ReserveTime = DateTime.Now;
+                seat.BuyerFIO = buyerFIO;
+            }
+            else
+            {
+                throw new Exception("This ticket was reserved.");
+            }
+        }
 	}
 }
 
